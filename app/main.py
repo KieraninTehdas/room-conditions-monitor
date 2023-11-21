@@ -2,10 +2,10 @@ from typing import Union
 
 from fastapi import FastAPI
 
-from dht20_sensor.sensor import DHT20Sensor
+from .dht20_sensor import get_sensor
 
 app = FastAPI()
-sensor = DHT20Sensor()
+sensor = get_sensor()
 
 
 @app.get("/")
