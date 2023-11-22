@@ -1,11 +1,13 @@
 from datetime import datetime
 from typing import Tuple
 import random
+from functools import lru_cache
 
 from dht20_sensor.sensor import DHT20Sensor
 from src.config import get_settings
 
 
+@lru_cache(maxsize=1)
 def get_sensor():
     if get_settings().use_dummy_sensor:
         return DummySensor(RandomDataGenerator(23.0, 65.0), datetime.utcnow())
