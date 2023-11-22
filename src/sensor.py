@@ -3,22 +3,28 @@ from typing import Tuple
 import random
 
 from dht20_sensor.sensor import DHT20Sensor
-from .config import get_settings
+from src.config import get_settings
 
 
 def get_sensor():
     if get_settings().use_dummy_sensor:
-        return DummySensor(RandomDataGenerator(23.0, 65.0))
+        return DummySensor(RandomDataGenerator(23.0, 65.0), datetime.utcnow())
     else:
         return DHT20Sensor()
 
 
+class Sensor:
+    def __init__(self, sensor):
+        self.sensor = sensor
+
+
 class DummySensor:
-    def __init__(self, data_generator):
+    def __init__(self, data_generator, timestamp_generator):
         self.data_generator = data_generator
+        self.timestamp_generator = timestamp_generator
 
     def read(self):
-        timestamp = datetime.utcnow().timestamp()
+        timestamp = self.timestamp_generator.timestamp()
         temperature, humidity = self.data_generator.next_readings()
 
         temperature = {
