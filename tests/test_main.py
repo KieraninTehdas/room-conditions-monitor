@@ -36,8 +36,12 @@ def test_current_conditions():
     assert response.json() == {
         "temperature": {
             "value": temperature,
-            "timestamp": now.timestamp(),
+            "timestamp": now.isoformat() + "Z",  # lazy...
             "units": "C",
         },
-        "humidity": {"value": humidity, "timestamp": now.timestamp(), "units": "%"},
+        "humidity": {
+            "value": humidity,
+            "timestamp": now.isoformat() + "Z",
+            "units": "%",
+        },
     }
