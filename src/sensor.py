@@ -10,14 +10,17 @@ from src.config import get_settings
 @lru_cache(maxsize=1)
 def get_sensor():
     if get_settings().use_dummy_sensor:
-        return DummySensor(RandomDataGenerator(23.0, 65.0), datetime.utcnow())
+        return Sensor(DummySensor(RandomDataGenerator(23.0, 65.0), datetime.utcnow()))
     else:
-        return DHT20Sensor()
+        return Sensor(DHT20Sensor())
 
 
 class Sensor:
     def __init__(self, sensor):
         self.sensor = sensor
+
+    def read(self):
+        return self.sensor.read()
 
 
 class DummySensor:
